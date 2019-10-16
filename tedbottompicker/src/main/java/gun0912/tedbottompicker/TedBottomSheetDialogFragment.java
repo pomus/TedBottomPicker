@@ -567,27 +567,25 @@ public class TedBottomSheetDialogFragment extends BottomSheetDialogFragment {
         });
     }
 
-
     private void onActivityResultGallery(Intent data) {
-        Uri temp = data.getData();
+        Uri uri = data.getData();
 
-        if (temp == null) {
+        if (uri == null) {
             errorMessage();
         }
 
-        String realPath = RealPathUtil.getRealPath(getActivity(), temp);
+        String realPath = RealPathUtil.getRealPath(getActivity(), uri);
 
-        Uri selectedImageUri;
-        try {
-            selectedImageUri = Uri.fromFile(new File(realPath));
-        } catch (Exception ex) {
-            selectedImageUri = Uri.parse(realPath);
+        if (realPath != null) {
+            try {
+                uri = Uri.fromFile(new File(realPath));
+            } catch (Exception ex) {
+                uri = Uri.parse(realPath);
+            }
         }
 
-        complete(selectedImageUri);
-
+        complete(uri);
     }
-
 
     public interface OnMultiImageSelectedListener {
         void onImagesSelected(List<Uri> uriList);
